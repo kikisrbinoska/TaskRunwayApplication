@@ -10,6 +10,7 @@ using TaskRunwayApplication.Models;
 
 namespace TaskRunwayApplication.Controllers
 {
+    [Authorize]
     public class TasksController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
