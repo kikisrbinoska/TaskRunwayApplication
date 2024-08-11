@@ -1,0 +1,76 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Landing Page</title>
+    <link rel="stylesheet" href="~/Content/styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="caption">
+            <h1 style="color:deeppink; font-size: 50px">Lost in a sea of tasks? </h1>
+            <h2 style="color:hotpink; font-size: 40px">Find your path to productivity</h2>
+            <p style="color:rebeccapurple">Sign up and streamline your task management</p>
+            <a href="/Account/Register" class="btn" style="background-color:rebeccapurple;color:white">Sign Up</a>
+        </div>
+        <div class="photo">
+            <img src="~/Images/landing.png" alt="Landing Photo">
+        </div>
+    </div>
+</body>
+</html>
+<style>
+    .container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px;
+        gap: 20px;
+    }
+
+    .caption {
+        flex: 1;
+        max-width: 45%;
+        padding: 20px;
+    }
+
+        .caption h1 {
+            color: deeppink;
+            font-size: 50px;
+            margin-bottom: 10px;
+        }
+
+        .caption h2 {
+            color: hotpink;
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        .caption p {
+            color: rebeccapurple;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+
+        .caption .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: rebeccapurple;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+    .photo {
+        flex: 1;
+        max-width: 55%;
+        padding: 20px;
+    }
+
+        .photo img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+</style>

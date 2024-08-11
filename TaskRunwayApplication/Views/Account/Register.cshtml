@@ -1,0 +1,65 @@
+﻿@model TaskRunwayApplication.Models.RegisterViewModel
+@{
+    ViewBag.Title = "Register";
+}
+
+<main aria-labelledby="title">
+    <div class="auth-container">
+        <div class="auth-form">
+            <h2 id="title">@ViewBag.Title.</h2>
+
+            @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+                <h4>Create a new account.</h4>
+                <hr />
+                @Html.ValidationSummary("", new { @class = "text-danger" })
+                <div class="row">
+                    @Html.LabelFor(m => m.Email, new { @class = "col-md-2 col-form-label" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="row">
+                    @Html.LabelFor(m => m.Password, new { @class = "col-md-2 col-form-label" })
+                    <div class="col-md-10">
+                        @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="row">
+                    @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 col-form-label" })
+                    <div class="col-md-10">
+                        @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="offset-md-2 col-md-10">
+                        <input type="submit" value="Register" class="btn btn-outline-dark" style="border-block-color:rebeccapurple" />
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</main>
+<style>
+    .auth-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background-color: #f8f9fa;
+    }
+
+    .auth-form {
+        border: 1px solid #ced4da;
+        border-radius: 8px;
+        padding: 20px;
+        background-color: #ffffff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        max-width: 600px;
+        width: 100%;
+    }
+</style>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

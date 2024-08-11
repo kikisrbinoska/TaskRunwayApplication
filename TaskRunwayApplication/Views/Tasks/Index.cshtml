@@ -1,0 +1,87 @@
+﻿@model IEnumerable<TaskRunwayApplication.Models.Task>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<form id="tasksForm" method="post" action="@Url.Action("SaveTasks", "Tasks")">
+    <table class="table">
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.Title)</th>
+            <th>@Html.DisplayNameFor(model => model.Description)</th>
+            <th>@Html.DisplayNameFor(model => model.Category)</th>
+            <th>Deadline</th>
+            <th>@Html.DisplayNameFor(model => model.Spent)</th>
+            <th>@Html.DisplayNameFor(model => model.TaskStatus)</th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.Title)</td>
+                <td>@Html.DisplayFor(modelItem => item.Description)</td>
+                <td>@Html.DisplayFor(modelItem => item.Category)</td>
+                <td>@Html.DisplayFor(modelItem => item.DueDate)</td>
+
+                <td>
+                    <div>
+                        <button type="button" onclick="startTimer('@item.Id')">Start</button>
+                        <button type="button" onclick="stopTimer('@item.Id')">Stop</button>
+                        <span id="displayTime_@item.Id">00:00:00</span>
+                        <input type="hidden" id="timeSpent_@item.Id" name="timeSpent_@item.Id" value="@item.Spent" />
+                    </div>
+                </td>
+                <td>@Html.DisplayFor(modelItem => item.TaskStatus)</td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                </td>
+            </tr>
+        }
+    </table>
+
+    <button type="submit">Save Times</button>
+</form>
+
+
+<script>let timers = {};
+
+    function startTimer(taskId) {
+        if (!timers[taskId]) {
+            timers[taskId] = {
+                startTime: new Date(),
+                timer: setInterval(() => updateTime(taskId), 1000)
+            };
+        }
+    }
+
+    function stopTimer(taskId) {
+        if (timers[taskId]) {
+            clearInterval(timers[taskId].timer);
+            const endTime = new Date();
+            const timeSpent = Math.round((endTime - timers[taskId].startTime) / 1000);
+            const previousTime = parseInt(document.getElementById('timeSpent_' + taskId).value, 10) || 0;
+            document.getElementById('timeSpent_' + taskId).value = previousTime + timeSpent;
+            delete timers[taskId];
+        }
+    }
+
+    function updateTime(taskId) {
+        const now = new Date();
+        const elapsed = Math.round((now - timers[taskId].startTime) / 1000);
+        const hours = Math.floor(elapsed / 3600);
+        const minutes = Math.floor((elapsed % 3600) / 60);
+        const seconds = elapsed % 60;
+        const formattedTime =
+            `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        document.getElementById('displayTime_' + taskId).innerText = formattedTime;
+    }</script>

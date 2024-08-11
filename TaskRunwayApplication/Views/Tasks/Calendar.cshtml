@@ -1,0 +1,124 @@
+﻿@model TaskRunwayApplication.Models.Task
+@{
+    ViewBag.Title = "Calendar";
+}
+<h2 style="color:mediumpurple; font-weight: 600;">Calendar</h2>
+<hr />
+
+<div id='calendar'></div>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.js'></script>
+
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+
+<link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.css' rel='stylesheet' />
+
+<style>
+
+    .fc {
+        background-color: white !important;
+    }
+
+    .fc-daygrid-day {
+        border: 2px solid hotpink !important;
+    }
+
+    .fc-daygrid-day-number {
+        color: purple !important;
+    }
+
+    .fc-toolbar-title {
+        color: hotpink !important;
+    }
+
+    .fc-daygrid-day.fc-day-today {
+        border: 2px solid hotpink !important;
+    }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var calendarEl = document.getElementById('calendar');
+
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        eventSources: [
+            {
+                url: '@Url.Action("GetEvents", "Tasks")',
+                method: 'GET',
+                failure: function() {
+                    alert('There was an error while fetching events.');
+                }
+            }
+        ],
+        dateClick: function(info) {
+            $('#DueDate').val(info.dateStr);
+            $('#taskModal').modal('show');
+        }
+    });
+
+    calendar.render();
+    window.calendar = calendar; // Store calendar instance globally
+});
+
+
+
+</script>
+
+<div class="modal fade" id="taskModal" tabindex="-1" role="dialog" aria-labelledby="taskModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="taskModalLabel">Create Task</h5>
+
+            </div>
+            <div class="modal-body">
+                @using (Html.BeginForm("Create", "Tasks", FormMethod.Post, new { id = "createTaskForm" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.DueDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.TextBoxFor(model => model.DueDate, new { @class = "form-control", id = "DueDate", placeholder = "yyyy-mm-dd" })
+                                @Html.ValidationMessageFor(model => model.DueDate, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.TaskStatus, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EnumDropDownListFor(model => model.TaskStatus, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.TaskStatus, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <input type="submit" value="Create" class="btn btn-default" />
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
