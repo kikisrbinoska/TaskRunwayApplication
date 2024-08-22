@@ -43,13 +43,36 @@ namespace TaskRunwayTest.Tests.Controllers
             _controller.db = _mockDbContext.Object;
         }
 
+        /* [TestMethod]
+         public void GetEvents_ReturnsJsonResultWithCorrectData()
+         {
+
+             var result = _controller.GetEvents() as JsonResult;
+
+
+             Assert.IsNotNull(result, "The result should be a JsonResult.");
+
+             var jsonData = JsonConvert.SerializeObject(result.Data);
+             var events = JsonConvert.DeserializeObject<List<EventViewModel>>(jsonData);
+
+             Assert.IsNotNull(events, "The events list should not be null.");
+             Assert.AreEqual(2, events.Count, "The number of events should be 2.");
+
+             Assert.AreEqual("Task 1", events[0].Title, "The title of the first event should be 'Task 1'.");
+             Assert.AreEqual("2024-08-12T00:00:00", events[0].Start, "The start date of the first event should be '2024-08-12T00:00:00'.");
+
+             Assert.AreEqual("Task 2", events[1].Title, "The title of the second event should be 'Task 2'.");
+             Assert.AreEqual("2024-08-13T00:00:00", events[1].Start, "The start date of the second event should be '2024-08-13T00:00:00'.");
+         } */
         [TestMethod]
-        public void GetEvents_ReturnsJsonResultWithCorrectData()
+        [DataRow(0, "Task 1", "2024-08-12T00:00:00")]
+        [DataRow(1, "Task 2", "2024-08-13T00:00:00")]
+        public void GetEvents_ReturnsJsonResultWithCorrectData(int eventIndex, string expectedTitle, string expectedStart)
         {
-            
+            // Act
             var result = _controller.GetEvents() as JsonResult;
 
-            
+            // Assert
             Assert.IsNotNull(result, "The result should be a JsonResult.");
 
             var jsonData = JsonConvert.SerializeObject(result.Data);
@@ -58,11 +81,8 @@ namespace TaskRunwayTest.Tests.Controllers
             Assert.IsNotNull(events, "The events list should not be null.");
             Assert.AreEqual(2, events.Count, "The number of events should be 2.");
 
-            Assert.AreEqual("Task 1", events[0].Title, "The title of the first event should be 'Task 1'.");
-            Assert.AreEqual("2024-08-12T00:00:00", events[0].Start, "The start date of the first event should be '2024-08-12T00:00:00'.");
-
-            Assert.AreEqual("Task 2", events[1].Title, "The title of the second event should be 'Task 2'.");
-            Assert.AreEqual("2024-08-13T00:00:00", events[1].Start, "The start date of the second event should be '2024-08-13T00:00:00'.");
+            Assert.AreEqual(expectedTitle, events[eventIndex].Title, $"The title of the event at index {eventIndex} should be '{expectedTitle}'.");
+            Assert.AreEqual(expectedStart, events[eventIndex].Start, $"The start date of the event at index {eventIndex} should be '{expectedStart}'.");
         }
 
         private class EventViewModel
