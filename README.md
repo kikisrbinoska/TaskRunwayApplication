@@ -1,3 +1,15 @@
+# TaskRunway
+
+TaskRunway is a task management application that helps you stay organized and productive. It includes a calendar for scheduling, a task list with time tracking, and detailed statistics.
+
+## Features
+
+- 📅 **Calendar View** – Schedule and visualize tasks by date.
+- ✅ **Task List** – Add, edit, and manage your tasks efficiently.
+- ⏱ **Time Tracking** – Measure the time spent on tasks.
+- 📊 **Statistics** – View insights into your productivity.
+
+
 ## Getting Started
 
 ### Prerequisites
